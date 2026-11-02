@@ -215,11 +215,11 @@ Helper scripts for automation:
 
 - `scripts/init-session.sh` — Initialize planning files. With a name arg, creates an isolated plan under `.planning/YYYY-MM-DD-<slug>/` for parallel task workflows. Without args, writes `task_plan.md` at project root (legacy mode, backward-compatible).
 - `scripts/set-active-plan.sh` — Switch or inspect the active plan pointer (`.planning/.active_plan`). Run with `--list` to show named plans and phase counts, with a plan ID to switch, or without args to show which plan is current.
-- `scripts/resolve-plan-dir.sh` — Resolve the active plan directory. A set `$PLAN_ID` is a binding: it resolves or resolution stops, never another plan (issue #237). With no `$PLAN_ID`, multiple named plans refuse selection. A single named plan may use `.planning/.active_plan` or discovery by mtime; otherwise resolution falls back to the project root (legacy). Used internally by hooks.
+- `scripts/resolve-plan-dir.sh` — Resolve the active plan directory. A set `$PLAN_ID` is a binding: it resolves or resolution stops, never another plan (issue #237). With no `$PLAN_ID`, multiple named plans refuse selection. A single named plan may use `.planning/.active_plan` or discovery by mtime; otherwise resolution falls back to the project root (legacy). Used by planning helper scripts; this Antigravity adapter does not register hook callbacks.
 - `scripts/check-complete.sh` — Verify all phases in the active plan are complete.
 - `scripts/session-catchup.py`: Explicit same-project session-record aggregation or bounded replay (`--metadata` / `--replay`); bare invocation does not access host history.
-- `scripts/attest-plan.sh` (and `.ps1`) — Lock the current `task_plan.md` content with a SHA-256 attestation (v2.37.0). Hooks then refuse to inject plan content if the file diverges from the attested hash. Use `--show` to print the stored hash, `--clear` to remove the attestation. See `/plan-attest` command.
-- `scripts/plan-doctor.sh` — One-pass self-check for the mechanisms that fail silently (v3.6.0): plan resolution, hook injection, canonicalizer path shape, attestation state, install surfaces, per-fire hook latency. Run it whenever hooks seem quiet or after installing on a new machine. See `/plan-doctor` command.
+- `scripts/attest-plan.sh` (and `.ps1`) — Lock the current `task_plan.md` content with a SHA-256 attestation (v2.37.0). Upstream hook adapters can refuse to inject plan content if the file diverges from the attested hash; no such hook is active in this Antigravity adapter. Use `--show` to print the stored hash and `--clear` to remove the attestation.
+- `scripts/plan-doctor.sh` — One-pass self-check for plan resolution, canonicalizer path shape, attestation state, and install-surface assumptions. In this Antigravity adapter, interpret hook-specific checks as upstream diagnostics, not as active plugin callbacks.
 
 ### List saved plans
 
@@ -251,9 +251,9 @@ For several agents collaborating on one task, share its `PLAN_ID`, keep one orch
 
 ### Shared parent directories (v3.9.0)
 
-`PLAN_ID` is a slug resolved against the current directory, so it can only ever name a plan under `$(pwd)/.planning`. When an agent thread runs with its cwd at a shared parent (`/workspace`) while the real work lives in a nested project (`/workspace/project`), the parent's plan is the only one the hooks can see, and it used to be injected on every fire. `PWF_PLAN_ROOT` takes an absolute path and pins resolution to that root regardless of where the cwd sits. A pin that does not resolve stops injection rather than falling back.
+`PLAN_ID` is a slug resolved against the current directory, so it can only ever name a plan under `$(pwd)/.planning`. When an agent thread runs with its cwd at a shared parent (`/workspace`) while the real work lives in a nested project (`/workspace/project`), the parent's plan is the only one the resolver can select, and it used to be injected on every fire. `PWF_PLAN_ROOT` takes an absolute path and pins resolution to that root regardless of where the cwd sits. A pin that does not resolve stops injection rather than falling back.
 
-When no pin is set, the plan was picked by the `.active_plan` pointer or by the newest plan directory, and a project directly below the root carries its own planning state, the hooks treat that as ambiguous and inject nothing:
+When no pin is set, the plan was picked by the `.active_plan` pointer or by the newest plan directory, and a project directly below the root carries its own planning state, the resolver reports an ambiguous plan selection and stops:
 
 ```
 [planning-with-files] Ambiguous plan: this cwd has an active plan and a nested
