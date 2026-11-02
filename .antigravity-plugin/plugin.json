@@ -1,0 +1,13 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "api-anything",
+  "displayName": "API Anything — Agent Skills Suite",
+  "version": "0.4.0",
+  "description": "Learn and call website APIs, with engineering, persistent planning, and frontend-design skills for Antigravity.",
+  "suggestedPrompts": [
+    "Use API Anything to find or learn an API for this website.",
+    "Use the engineering skills to plan, implement, test, and review this change.",
+    "Use the persistent planning skill for this multi-step task.",
+    "Use the design-taste-frontend skill to improve and verify this web interface."
+  ]
+}
