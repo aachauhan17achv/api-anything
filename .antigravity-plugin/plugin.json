@@ -3,11 +3,26 @@
   "name": "api-anything",
   "displayName": "API Anything — Agent Skills Suite",
   "version": "0.4.0",
-  "description": "Learn and call website APIs, with engineering, persistent planning, and frontend-design skills for Antigravity.",
+  "description": "Discover and call website APIs, supported by engineering workflows, persistent planning, and a specialist frontend-design skill.",
   "suggestedPrompts": [
     "Use API Anything to find or learn an API for this website.",
-    "Use the engineering skills to plan, implement, test, and review this change.",
-    "Use the persistent planning skill for this multi-step task.",
-    "Use the design-taste-frontend skill to improve and verify this web interface."
+    "Use the engineering and planning skills to plan, implement, test, and review this change.",
+    "Use the Taste Skill to design, improve, and visually verify this web interface."
+  ],
+  "author": {
+    "name": "aachauhan17achv",
+    "url": "https://github.com/aachauhan17achv"
+  },
+  "homepage": "https://github.com/aachauhan17achv/api-anything",
+  "repository": "https://github.com/aachauhan17achv/api-anything",
+  "license": "MIT",
+  "keywords": [
+    "api",
+    "mcp",
+    "agent-skills",
+    "antigravity",
+    "browser",
+    "planning",
+    "frontend-design"
   ]
 }
