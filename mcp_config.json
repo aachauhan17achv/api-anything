@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "api-anything": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "api-anything",
+        "mcp"
+      ]
+    }
+  }
+}
