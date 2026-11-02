@@ -28,7 +28,7 @@ agy plugin validate --strict .
 agy plugin install .
 ```
 
-The API Anything MCP server is declared in the repository-root `mcp_config.json`. It starts with Node.js and npx; the first launch may download the package.
+The API Anything MCP server is declared in the repository-root `mcp_config.json`. It requires Node.js 22.13+ and npx; the first launch may download the package.
 
 ## Notes
 
